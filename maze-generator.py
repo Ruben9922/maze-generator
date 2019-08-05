@@ -6,10 +6,10 @@ def input_int(prompt, default=None, min=None, max=None):
     while not input_valid:
         s = input(f"{prompt} (leave blank for {default}): ")
         try:
-            number = int(s)
-            if (min is None or number >= min) and (max is None or number <= max):
+            x = int(s)
+            if (min is None or x >= min) and (max is None or x <= max):
                 input_valid = True
-                return number
+                return x
             else:
                 if min is not None and max is not None:
                     print(f"Integers between {min} and {max} (inclusive) only!")
