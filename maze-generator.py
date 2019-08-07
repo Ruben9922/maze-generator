@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def input_int(prompt, default=None, min=None, max=None):
@@ -26,3 +27,9 @@ def input_int(prompt, default=None, min=None, max=None):
 
 width = input_int("Width", 20, 0, None)
 height = input_int("Height", width, 0, None)
+
+grid = np.ones((height, width))
+grid[1, 3] = 0
+
+plt.imshow(grid, cmap="gray_r", vmin=0, vmax=1)
+plt.show()
