@@ -57,26 +57,26 @@ initial_cell = (np.random.randint(height), np.random.randint(width))
 grid[initial_cell] = 0
 
 # Create wall set
-wall_set = set()
+frontier_set = set()
 
 # Get neighbouring walls and add to wall set
 neighbouring_walls = wall_neighbours(initial_cell)
-wall_set.update(neighbouring_walls)
+frontier_set.update(neighbouring_walls)
 
-while len(wall_set) != 0:
-    print(f"wall set: {wall_set}")
+while len(frontier_set) != 0:
+    print(f"wall set: {frontier_set}")
     # Pick arbitrary wall from wall set and remove
-    wall = wall_set.pop()
+    frontier_cell = frontier_set.pop()
 
-    print(f"wall:{wall}")
-    print(nonwall_neighbours(wall))
+    print(f"wall:{frontier_cell}")
+    print(nonwall_neighbours(frontier_cell))
 
     # If only one of the neighbouring cells is a non-wall, then change the wall to a non-wall and add neighbouring walls
     # to wall list
-    if len(nonwall_neighbours(wall)) == 1:
-        grid[wall] = 0
-        neighbouring_walls = wall_neighbours(wall)
-        wall_set.update(neighbouring_walls)
+    if len(nonwall_neighbours(frontier_cell)) == 1:
+        grid[frontier_cell] = 0
+        neighbouring_walls = wall_neighbours(frontier_cell)
+        frontier_set.update(neighbouring_walls)
 
 plt.imshow(grid, cmap="gray_r", vmin=0, vmax=1)
 plt.show()
