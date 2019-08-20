@@ -25,11 +25,58 @@ def input_int(prompt, default=None, min=None, max=None):
                 print("Integers only!")
 
 
+def wall_neighbours(cell):
+    neighbours = {(cell[0] - 1, cell[1]), (cell[0], cell[1] - 1), (cell[0] + 1, cell[1]), (cell[0], cell[1] + 1)}
+
+    # Removing walls that are out-of-bounds and walls
+    neighbours = set(neighbour for neighbour in neighbours if
+                     0 <= neighbour[0] < height and 0 <= neighbour[1] < width and grid[neighbour] == 1)
+
+    return neighbours
+
+
+def nonwall_neighbours(cell):
+    neighbours = {(cell[0] - 1, cell[1]), (cell[0], cell[1] - 1), (cell[0] + 1, cell[1]), (cell[0], cell[1] + 1)}
+
+    # Removing walls that are out-of-bounds and walls
+    neighbours = set(neighbour for neighbour in neighbours if
+                     0 <= neighbour[0] < height and 0 <= neighbour[1] < width and grid[neighbour] == 0)
+
+    return neighbours
+
+
 width = input_int("Width", 20, 0, None)
 height = input_int("Height", width, 0, None)
 
+# Create grid full of walls
+# 1 represents wall; 0 represents non-wall
 grid = np.ones((height, width))
-grid[1, 3] = 0
+
+# Pick cell and mark as non-wall
+initial_cell = (np.random.randint(height), np.random.randint(width))
+grid[initial_cell] = 0
+
+# Create wall set
+wall_set = set()
+
+# Get neighbouring walls and add to wall set
+neighbouring_walls = wall_neighbours(initial_cell)
+wall_set.update(neighbouring_walls)
+
+while len(wall_set) != 0:
+    print(f"wall set: {wall_set}")
+    # Pick arbitrary wall from wall set and remove
+    wall = wall_set.pop()
+
+    print(f"wall:{wall}")
+    print(nonwall_neighbours(wall))
+
+    # If only one of the neighbouring cells is a non-wall, then change the wall to a non-wall and add neighbouring walls
+    # to wall list
+    if len(nonwall_neighbours(wall)) == 1:
+        grid[wall] = 0
+        neighbouring_walls = wall_neighbours(wall)
+        wall_set.update(neighbouring_walls)
 
 plt.imshow(grid, cmap="gray_r", vmin=0, vmax=1)
 plt.show()
