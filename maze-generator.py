@@ -26,7 +26,7 @@ def input_int(prompt, default=None, min=None, max=None):
                 print("Integers only!")
 
 
-def frontier_cells(cell):
+def compute_frontier_cells(cell):
     neighbours = {(cell[0] - 1, cell[1]), (cell[0], cell[1] - 1), (cell[0] + 1, cell[1]), (cell[0], cell[1] + 1)}
 
     # Removing walls that are out-of-bounds and walls
@@ -36,7 +36,7 @@ def frontier_cells(cell):
     return neighbours
 
 
-def neighbours(cell):
+def compute_neighbours(cell):
     neighbours = {(cell[0] - 1, cell[1]), (cell[0], cell[1] - 1), (cell[0] + 1, cell[1]), (cell[0], cell[1] + 1)}
 
     # Removing walls that are out-of-bounds and walls
@@ -61,7 +61,7 @@ grid[initial_cell] = 0
 frontier_set = set()
 
 # Get neighbouring walls and add to wall set
-neighbouring_walls = frontier_cells(initial_cell)
+neighbouring_walls = compute_frontier_cells(initial_cell)
 frontier_set.update(neighbouring_walls)
 
 while len(frontier_set) != 0:
@@ -70,13 +70,13 @@ while len(frontier_set) != 0:
     frontier_cell = frontier_set.pop()
 
     print(f"wall:{frontier_cell}")
-    print(neighbours(frontier_cell))
+    print(compute_neighbours(frontier_cell))
 
     # If only one of the neighbouring cells is a non-wall, then change the wall to a non-wall and add neighbouring walls
     # to wall list
-    if len(neighbours(frontier_cell)) == 1:
+    if len(compute_neighbours(frontier_cell)) == 1:
         grid[frontier_cell] = 0
-        neighbouring_walls = frontier_cells(frontier_cell)
+        neighbouring_walls = compute_frontier_cells(frontier_cell)
         frontier_set.update(neighbouring_walls)
 
 plt.imshow(grid, cmap="gray_r", vmin=0, vmax=1)
